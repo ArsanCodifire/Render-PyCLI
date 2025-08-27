@@ -4,7 +4,7 @@ setup(
     name="renderpy",
     version="0.5.0",
     description="Render CLI in Python",
-    long_description=open("README.md", encoding="utf-8").read(),
+    long_description=open("ReadMe.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     author="Arsan Codifire",
     url="https://github.com/arsancodifire/renderpy",  # replace with your repo link
