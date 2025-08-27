@@ -7,7 +7,7 @@ setup(
     long_description=open("ReadMe.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     author="Arsan Codifire",
-    url="https://github.com/arsancodifire/renderpy",  # replace with your repo link
+    url="https://github.com/ArsanCodifire/Render-PyCLI",  # replace with your repo link
     packages=find_packages(),
     install_requires=[
         "typer",
