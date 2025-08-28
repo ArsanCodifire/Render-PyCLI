@@ -1,11 +1,13 @@
-import os
-import click
+import click, typer
 
 RENDER_API_BASE = "https://api.render.com/v1"
+_api_key = None
 
 def require_api_key():
-    key = os.environ.get("RENDER_API")
-    if not key:
-        click.secho("❌ RENDER_API_KEY environment variable not set.", fg="red")
-        raise SystemExit(1)
-    return key
+    global _api_key
+    if not _api_key:
+        _api_key = typer.prompt("🔑 Enter your Render API key")
+        if not _api_key:
+            click.secho("❌ No API key provided.", fg="red")
+            raise SystemExit(1)
+    return _api_key
