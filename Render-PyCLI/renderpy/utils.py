@@ -1,13 +1,26 @@
-import click, typer
+import click
+import typer
+import os
 
 RENDER_API_BASE = "https://api.render.com/v1"
-_api_key = None
+API_KEY_FILE = os.path.expanduser("~/.renderpy_api_key")
+
+def save_api_key(key: str):
+    """Saves the API key to a file."""
+    with open(API_KEY_FILE, "w") as f:
+        f.write(key)
+
+def load_api_key():
+    """Loads the API key from a file."""
+    if os.path.exists(API_KEY_FILE):
+        with open(API_KEY_FILE, "r") as f:
+            return f.read().strip()
+    return None
 
 def require_api_key():
-    global _api_key
-    if not _api_key:
-        _api_key = typer.prompt("🔑 Enter your Render API key")
-        if not _api_key:
-            click.secho("❌ No API key provided.", fg="red")
-            raise SystemExit(1)
-    return _api_key
+    """Ensures an API key is available."""
+    api_key = load_api_key()
+    if not api_key:
+        click.secho("❌ No API key found. Please run 'renderpy login' to set your key.", fg="red")
+        raise SystemExit(1)
+    return api_key
