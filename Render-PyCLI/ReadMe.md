@@ -14,7 +14,7 @@ pip install .
 # or if uploaded to PyPI
 pip install renderpy
 ```
-**Usage Guide**
+## Usage Guide**
 *Getting Started*
 Before using the CLI, you must authenticate with your Render API key.
 
