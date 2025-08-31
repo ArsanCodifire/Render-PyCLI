@@ -22,5 +22,5 @@ def require_api_key():
     api_key = load_api_key()
     if not api_key:
         click.secho("❌ No API key found. Please run 'renderpy login' to set your key.", fg="red")
-        raise SystemExit(1)
+        raise typer.Exit(code=1)
     return api_key
