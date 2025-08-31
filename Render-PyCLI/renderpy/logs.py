@@ -59,3 +59,14 @@ def tail(service_id: str, interval: float = 2.0):
     except Exception as e:
         typer.echo(f"Error: {e}")
         raise typer.Exit(code=1)
+
+@app.command("stream")
+def stream_logs(service_id: str, lines: int = typer.Option(50, "--lines", help="Number of lines")):
+    """Stream live logs (replaces --tail from Node.js CLI)"""
+    import time
+    console.rule(f"Streaming logs for {service_id}")
+    while True:
+        data = api_request("GET", f"/services/{service_id}/logs?tail={lines}")
+        for log in data.get("logs", []):
+            console.print(f"[{log.get('timestamp')}] {log.get('message')}")
+        time.sleep(3)
