@@ -29,3 +29,25 @@ def list_deploys(service_id: str):
 
     for d in data:
         console.print(f"{d.get('id')}  {d.get('status')}  {d.get('createdAt')}")
+
+@app.command("create")
+def create_deploy(
+    service_id: str,
+    branch: str = typer.Option("main", "--branch", help="Git branch"),
+    clear_cache: bool = typer.Option(False, "--clear-cache", help="Clear build cache"),
+    json: bool = typer.Option(False, "--json", help="Output JSON"),
+):
+    """Trigger a new deploy for a service"""
+    payload = {"branch": branch, "clearCache": clear_cache}
+    data = api_request("POST", f"/services/{service_id}/deploys", json=payload)
+
+    if json:
+        console.print_json(data)
+        return
+
+    table = Table(show_header=True, header_style="bold cyan", title="Deploy Created", show_lines=True)
+    table.add_column("Field", style="bold magenta")
+    table.add_column("Value", style="white")
+    for k, v in data.items():
+        table.add_row(str(k), str(v))
+    console.print(table)
