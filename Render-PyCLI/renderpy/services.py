@@ -45,3 +45,20 @@ def service_info(service_id: str):
         raise typer.Exit(code=1)
 
     console.print(d)
+
+@app.command("get")
+def get_service(service_id: str, json: bool = typer.Option(False, "--json", help="Output JSON")):
+    """Get details of a single service"""
+    data = api_request("GET", f"/services/{service_id}")
+    if json:
+        console.print_json(data)
+        return
+
+    table = Table(show_header=True, header_style="bold cyan", title=f"Service {service_id}", show_lines=True)
+    table.add_column("Field", style="bold magenta")
+    table.add_column("Value", style="white")
+
+    for k, v in data.items():
+        table.add_row(str(k), str(v))
+
+    console.print(table)
