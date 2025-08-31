@@ -14,19 +14,24 @@ pip install .
 # or if uploaded to PyPI
 pip install renderpy
 ```
-Usage Guide
-Getting Started
+**Usage Guide**
+*Getting Started*
 Before using the CLI, you must authenticate with your Render API key.
-Logging In
+
+*Logging In*
 To save your API key, run the login command. You will be prompted to enter your key, which the CLI will then securely save to a file.
+
 ```bash
 renderpy login
-🔑 Enter Your Render API:**************
-API saved sucessfully
+🔑 Enter Your Render API key:**************
+API key saved sucessfully
 ```
+
 After successfully saving the key, you will see a confirmation message.
+
 **Available Commands**
 The RenderPy CLI provides several commands to interact with your Render services.
+
 **Services**
 These commands help you manage your Render services.
  * renderpy services list
@@ -43,6 +48,7 @@ These commands help you manage your Render services.
    ```bash
    renderpy services get srv-123abc456def789ghi --json
    ```
+   
 **Deployments**
 Use these commands to manage deployments for your services.
  * renderpy deploy create <service_id>
@@ -53,9 +59,12 @@ Use these commands to manage deployments for your services.
    ```
  * renderpy deploy list <service_id>
    Lists all deployments for a given service ID, showing the deployment ID, status, and creation timestamp.
+   
 **Logs**
 This command allows you to view the logs for your services in a Textual TUI.
  * renderpy logs stream <service_id>
    Streams live logs for a service in real-time. This command replaces the older --tail functionality and provides an interactive TUI. Press Ctrl+C to stop the log stream.
    Example:
+   ```bash
    renderpy logs stream srv-123abc456def789ghi
+   ```
