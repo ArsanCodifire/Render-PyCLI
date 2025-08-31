@@ -50,23 +50,21 @@ class LogsApp(App):
             if text:
                 await self.scroll.update(text)
 
-@logs.command("tail")
-def tail(service_id: str, interval: float = 2.0):
-    """Open a TUI that tails logs for a service_id"""
-    try:
-        app = LogsApp(service_id, poll_interval=interval)
-        app.run()
-    except Exception as e:
-        typer.echo(f"Error: {e}")
-        raise typer.Exit(code=1)
-
-@app.command("stream")
+@logs.command("stream")
 def stream_logs(service_id: str, lines: int = typer.Option(50, "--lines", help="Number of lines")):
-    """Stream live logs (replaces --tail from Node.js CLI)"""
+    """Stream live logs for a service_id (replaces --tail)"""
+    from rich.console import Console
+    console = Console()
+
     import time
     console.rule(f"Streaming logs for {service_id}")
-    while True:
-        data = api_request("GET", f"/services/{service_id}/logs?tail={lines}")
-        for log in data.get("logs", []):
-            console.print(f"[{log.get('timestamp')}] {log.get('message')}")
-        time.sleep(3)
+    try:
+        while True:
+            data = api_request("GET", f"/services/{service_id}/logs?tail={lines}")
+            for log in data.get("logs", []):
+                ts = log.get("timestamp") or log.get("createdAt") or ""
+                msg = log.get("message") or log.get("msg") or log.get("text") or ""
+                console.print(f"[cyan]{ts}[/cyan] {msg}")
+            time.sleep(3)
+    except KeyboardInterrupt:
+        console.print("[bold red]\nStopped streaming logs[/bold red]")
