@@ -51,20 +51,7 @@ class LogsApp(App):
                 await self.scroll.update(text)
 
 @logs.command("stream")
-def stream_logs(service_id: str, lines: int = typer.Option(50, "--lines", help="Number of lines")):
-    """Stream live logs for a service_id (replaces --tail)"""
-    from rich.console import Console
-    console = Console()
-
-    import time
-    console.rule(f"Streaming logs for {service_id}")
-    try:
-        while True:
-            data = api_request("GET", f"/services/{service_id}/logs?tail={lines}")
-            for log in data.get("logs", []):
-                ts = log.get("timestamp") or log.get("createdAt") or ""
-                msg = log.get("message") or log.get("msg") or log.get("text") or ""
-                console.print(f"[cyan]{ts}[/cyan] {msg}")
-            time.sleep(3)
-    except KeyboardInterrupt:
-        console.print("[bold red]\nStopped streaming logs[/bold red]")
+def stream_logs(service_id: str):
+    """Stream live logs for a service in a TUI."""
+    app = LogsApp(service_id=service_id)
+    app.run()
