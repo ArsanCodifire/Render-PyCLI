@@ -10,7 +10,7 @@ app = typer.Typer(help="Render-PyCLI (Typer + Textual + httpx)")
 @app.command("login")
 def login_command():
     """Prompts for and saves your Render API key."""
-    key = typer.prompt("🔑 Enter your Render API key", hide_input=True)
+    key = typer.prompt("🔑 Enter your Render API key:", hide_input=True)
     save_api_key(key)
     typer.echo("✅ API key saved successfully!")
 
