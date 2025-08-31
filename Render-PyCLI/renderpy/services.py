@@ -46,7 +46,7 @@ def service_info(service_id: str):
 
     console.print(d)
 
-@app.command("get")
+@services.command("get")
 def get_service(service_id: str, json: bool = typer.Option(False, "--json", help="Output JSON")):
     """Get details of a single service"""
     data = api_request("GET", f"/services/{service_id}")
